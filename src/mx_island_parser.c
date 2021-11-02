@@ -1,22 +1,11 @@
 #include "../inc/pathfinder.h"
 
-bool islands_entry(char **islands, int count_islands, char *new_island) {
-    for (int i = 0; i < count_islands; i++) {
-        if (mx_strcmp(islands[i], new_island) == 0) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 void mx_island_parser(const char *file, t_bridge*** bridges, char*** islands,  int* count_islands, int* count_bridges) {
     int count_lines = mx_count_lines(file, '\n');
     char **str_lines = mx_strsplitlines(file, '\n');
-
     *count_islands = mx_atoi(str_lines[0]);
     int temp_count_islands = 0;
-    int error_line = mx_parser_validation(str_lines, count_lines);
+    int error_line = mx_parser_validation(str_lines, &count_lines);
     if(error_line) {
         mx_printerr("error: line ");
         mx_printerr(mx_itoa(error_line));
@@ -63,14 +52,6 @@ void mx_island_parser(const char *file, t_bridge*** bridges, char*** islands,  i
             temp += len + 1;
         }
         
-        
-        if (mx_strcmp((*bridges)[i - 1] -> start, (*bridges)[i - 1] -> end) == 0) {
-            mx_printerr("error: line ");
-            mx_printerr(mx_itoa(i + 1));
-            mx_printerr(" is not valid\n");
-            exit(-1);
-        }
-        
         (*bridges)[i - 1] -> length = mx_atoi(temp);
     }
     
@@ -87,4 +68,8 @@ void mx_island_parser(const char *file, t_bridge*** bridges, char*** islands,  i
             }
         }
     }
+    for (int i = 0; i < count_lines; i++) {
+        mx_strdel(&str_lines[i]);
+    }
+    free(str_lines);
 }

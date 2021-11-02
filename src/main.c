@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     int count_bridges = 0;
 
     mx_island_parser(file, &bridges, &islands, &count_islands, &count_bridges);
-    mx_find_routes(bridges, islands, count_islands);
+    mx_find_routes(bridges, islands, count_islands, count_bridges);
 
     delete_src(&file, &islands, &bridges, count_bridges, count_islands);
 }

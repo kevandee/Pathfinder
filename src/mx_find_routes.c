@@ -1,7 +1,7 @@
 #include "../inc/pathfinder.h"
 
-void mx_find_routes(t_bridge **bridges, char **islands, int count_islands){
-    int **matrix = to_matrix(bridges, islands, count_islands);
+void mx_find_routes(t_bridge **bridges, char **islands, int count_islands, int count_bridges){
+    int **matrix = to_matrix(bridges, islands, count_islands, count_bridges);
     
     for (int begin_index = 0; begin_index < count_islands; begin_index++) {
         for (int end_index = begin_index + 1; end_index < count_islands; end_index++) {
@@ -120,6 +120,12 @@ void mx_find_routes(t_bridge **bridges, char **islands, int count_islands){
             temp_paths = all_paths;
             output_paths(temp_paths, d, matrix, islands, count_islands,end_index);
             
+            temp_paths = all_paths;
+            while(temp_paths) {
+                mx_clear_list(&((t_path *)(temp_paths -> data))->path);
+                free(temp_paths -> data);
+                temp_paths=temp_paths->next;
+            }
             mx_clear_list(&all_paths);
             all_paths = NULL;
         }
